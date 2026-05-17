@@ -1,0 +1,24 @@
+<div class="layout">
+  <aside class="sidebar">
+    <div class="brand">
+      <span class="brand-icon">&#128663;</span>
+      <span>Vehicle Store</span>
+    </div>
+
+    <nav class="nav">
+      <a routerLink="/vehicles" routerLinkActive="active">Vehicles</a>
+      @if (authState.isAdmin()) {
+        <a routerLink="/users/create" routerLinkActive="active">Users</a>
+      }
+    </nav>
+
+    <div class="user-panel">
+      <span class="user-name">{{ authState.username() }}</span>
+      <button type="button" class="btn-logout" (click)="logout()">Logout</button>
+    </div>
+  </aside>
+
+  <main class="content">
+    <router-outlet />
+  </main>
+</div>

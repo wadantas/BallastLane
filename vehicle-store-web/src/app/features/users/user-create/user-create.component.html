@@ -1,0 +1,94 @@
+<div class="page">
+  <header class="page-header">
+    <h1>Users</h1>
+    <p>Manage system users (Admin only)</p>
+  </header>
+
+  @if (successMessage()) {
+    <div class="alert alert-success">{{ successMessage() }}</div>
+  }
+
+  @if (errorMessage()) {
+    <div class="alert alert-error">{{ errorMessage() }}</div>
+  }
+
+  <section class="card form-card">
+    <h2>Create user</h2>
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <div class="field">
+        <label for="username">Username</label>
+        <input id="username" type="text" formControlName="username" />
+      </div>
+
+      <div class="field">
+        <label for="email">Email</label>
+        <input id="email" type="email" formControlName="email" />
+      </div>
+
+      <div class="field">
+        <label for="password">Password</label>
+        <input id="password" type="password" formControlName="password" />
+      </div>
+
+      <div class="field">
+        <label for="role">Role</label>
+        <select id="role" formControlName="role">
+          @for (r of roles; track r) {
+            <option [value]="r">{{ r }}</option>
+          }
+        </select>
+      </div>
+
+      <button type="submit" class="btn-primary" [disabled]="creating()">
+        {{ creating() ? 'Creating...' : 'Create User' }}
+      </button>
+    </form>
+  </section>
+
+  <section class="list-section">
+    <h2>All users</h2>
+
+    @if (listError()) {
+      <div class="alert alert-error">{{ listError() }}</div>
+    }
+
+    @if (listLoading()) {
+      <p class="loading">Loading users...</p>
+    } @else if (users().length === 0) {
+      <div class="empty-state">
+        <p>No users registered yet.</p>
+      </div>
+    } @else {
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Username</th>
+              <th>Email</th>
+              <th>Role</th>
+              <th>Created</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (u of users(); track u.id) {
+              <tr>
+                <td><strong>{{ u.username }}</strong></td>
+                <td>{{ u.email }}</td>
+                <td>
+                  <span
+                    class="badge"
+                    [class.badge-admin]="u.role === UserRole.Admin"
+                    [class.badge-user]="u.role === UserRole.User"
+                  >
+                    {{ u.role }}
+                  </span>
+                </td>
+                <td>{{ u.createdAt | date:'short' }}</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+  </section>
+</div>

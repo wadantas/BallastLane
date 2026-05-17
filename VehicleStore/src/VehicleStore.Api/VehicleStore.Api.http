@@ -1,0 +1,29 @@
+@VehicleStore.Api_HostAddress = https://localhost:7254
+@token =
+
+### Login
+POST {{VehicleStore.Api_HostAddress}}/api/auth/login
+Content-Type: application/json
+
+{
+  "username": "admin",
+  "password": "Admin@123"
+}
+
+### Register vehicle
+POST {{VehicleStore.Api_HostAddress}}/api/vehicles
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "plateNumber": "ABC1D23",
+  "document": "12345678901",
+  "brand": "Toyota",
+  "model": "Corolla",
+  "year": 2024,
+  "price": 95000.00
+}
+
+### Get all vehicles
+GET {{VehicleStore.Api_HostAddress}}/api/vehicles
+Authorization: Bearer {{token}}
